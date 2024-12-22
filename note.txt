@@ -1,0 +1,11 @@
+*/
+
+
+*/
+
+- authentication ( login page, sign up page, logout)
+- UserAdmin::CRUD ( create, read, update, delete ) 
+- display ( list, filter, searching, categories, Details product, more product) 
+- recommendation 
+- cart page ( list product, delete list, amount cost, size, counter) 
+

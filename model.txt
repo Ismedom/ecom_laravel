@@ -1,0 +1,109 @@
+
+User Model:
+
+{
+    id: string;
+    user_name: string;
+    role: string;
+    profile_image_url: string;
+    create_at: Data || string;
+	update_at:Data|| string
+}
+
+Shop Model:
+
+{
+    id: string;
+    user_owner_id:string (ref User);
+    shop_name: string;
+    shop_profile_image: string;
+    categories: string;
+    keywords: [];
+    create_at: Data || string;
+	update_at:Data|| string
+}
+
+Product model: 
+
+{
+	id: string (uuid)
+	title: string;
+	description: string;
+	category: string;
+	keywords: string[];
+	language: string;
+	price: string;
+    image_base_url:string;
+	average_rating: number;
+	view_count: number
+	create_at: Data || string;
+	update_at:Data|| string
+}
+
+Images Details Url: 
+
+{
+    id: string (uuid);
+    product_id: string (uuid) ref(product)
+    [
+        "url1",
+        "url2",
+        "url3",
+    ],
+    create_at: Data || string;
+	update_at:Data|| string
+
+}
+
+- Rating Model :
+
+{
+	id: string (uuid)
+	user_rating_id: string (ref User) 
+	rating: number;
+	create_at: Date;
+	update_at: Date
+}
+
+- viewing Model (optional) : 
+{
+	id: string (uuid);
+	viewer_id: string (ref User);
+	create_at: Date;
+	update_at: Date;
+}
+
+Cart Model (optional) :
+{
+    id: string (uuid);
+    product_id: string (ref Product);
+    name: string (ref Name);
+    price: string (ref Price);
+    product_type: string (ref Product)
+    paid_status: boolean;
+    create_at: Data || string;
+	update_at:Data|| string
+}
+
+
+Save Product Model:
+
+{
+    id: string;
+    product_id: string;
+    product_type: string;
+    create_at: Data || string;
+	update_at:Data|| string
+}
+
+Save shop Model:
+
+{
+    id: string;
+    seller_id: string (ref User);
+    user_name: string (ref shop);
+    image_base_url: string (ref shop);
+    create_at: Data || string;
+	update_at:Data|| string
+}
+
