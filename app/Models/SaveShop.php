@@ -26,4 +26,8 @@ class SaveShop extends Model
         'user_owner_id',
         'shop_profile_image',
     ];
+    public function save_shop()
+    {
+        return $this->belongsTo(Rating::class, 'user_rating_id');
+    }
 }
