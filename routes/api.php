@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SaveShopController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +59,19 @@ Route::prefix('shop/{shop_id}/{product_id}/rating')->group(function () {
         Route::delete('/{id}', [RatingController::class, 'destroy']); 
     });
 }); 
+
+
+
+
+Route::prefix('save-shop')->group(function () {
+    Route::get('/', [SaveShopController::class, 'index']);
+    Route::post('/', [SaveShopController::class, 'store']);
+    Route::get('/{id}', [SaveShopController::class, 'show']);
+    Route::put('/{id}', [SaveShopController::class, 'update']);
+    Route::delete('/{id}', [SaveShopController::class, 'destroy']);
+});
+
+
 
 
 /*

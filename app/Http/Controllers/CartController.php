@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cart;
 
 class CartController extends Controller
 {
@@ -11,23 +12,26 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+      
+        $cartItems = Cart::all();
+        return response()->json($cartItems);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
-        //
+      
+        $validated = $request->validate([
+            'product_id' => 'required|uuid',
+            'name' => 'required|string',
+            'price' => 'required|string',
+            'product_type' => 'required|string',
+            'paid_status' => 'required|boolean',
+        ]);
+
+        $cartItem = Cart::create($validated);
+
+        return response()->json($cartItem, 201);
     }
 
     /**
@@ -35,23 +39,29 @@ class CartController extends Controller
      */
     public function show(string $id)
     {
-        //
+       
+        $cartItem = Cart::findOrFail($id);
+        return response()->json($cartItem);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'product_id' => 'sometimes|uuid',
+            'name' => 'sometimes|string',
+            'price' => 'sometimes|string',
+            'product_type' => 'sometimes|string',
+            'paid_status' => 'sometimes|boolean',
+        ]);
+
+       
+        $cartItem = Cart::findOrFail($id);
+        $cartItem->update($validated);
+
+        return response()->json($cartItem);
     }
 
     /**
@@ -59,6 +69,10 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       
+        $cartItem = Cart::findOrFail($id);
+        $cartItem->delete();
+
+        return response()->json(['message' => 'Cart item deleted successfully.']);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SaveProduct;
 use Illuminate\Http\Request;
 
 class SaveProductController extends Controller
@@ -11,15 +12,8 @@ class SaveProductController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $products = SaveProduct::all();
+        return response()->json($products);
     }
 
     /**
@@ -27,7 +21,17 @@ class SaveProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_id' => 'required|string|max:255',
+            'product_type' => 'required|string|max:255',
+        ]);
+
+        $saveProduct = SaveProduct::create([
+            'product_id' => $request->product_id,
+            'product_type' => $request->product_type,
+        ]);
+
+        return response()->json($saveProduct, 201);
     }
 
     /**
@@ -35,15 +39,8 @@ class SaveProductController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $saveProduct = SaveProduct::findOrFail($id);
+        return response()->json($saveProduct);
     }
 
     /**
@@ -51,7 +48,15 @@ class SaveProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'product_id' => 'sometimes|string|max:255',
+            'product_type' => 'sometimes|string|max:255',
+        ]);
+
+        $saveProduct = SaveProduct::findOrFail($id);
+        $saveProduct->update($request->all());
+
+        return response()->json($saveProduct);
     }
 
     /**
@@ -59,6 +64,9 @@ class SaveProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $saveProduct = SaveProduct::findOrFail($id);
+        $saveProduct->delete();
+
+        return response()->json(['message' => 'SaveProduct deleted successfully']);
     }
 }
