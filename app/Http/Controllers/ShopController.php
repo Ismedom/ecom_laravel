@@ -93,7 +93,6 @@ class ShopController extends Controller
                 'message' => 'Your not this shop owner',
             ], 403);
         }
-      
         $shop->delete();
         return response()->json([
             'message' => 'Shop deleted successfully!',

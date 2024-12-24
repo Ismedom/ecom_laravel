@@ -1,9 +1,11 @@
 <?php
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SaveProductController;
 use App\Http\Controllers\SaveShopController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +40,13 @@ Route::prefix('shop')->group(function () {
     });
 });
 
-Route::prefix('shop/{shop_id}')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| product Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('shop/{shop_id}/product')->group(function () {
     
     Route::get('/', [ProductController::class, 'index']);
 
@@ -50,7 +58,14 @@ Route::prefix('shop/{shop_id}')->group(function () {
     });
 });
 
-Route::prefix('shop/{shop_id}/{product_id}/rating')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| rating Routes
+|--------------------------------------------------------------------------
+*/
+
+
+Route::prefix('shop/{shop_id}/product/{product_id}/rating')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [RatingController::class, 'index']); 
         Route::post('/', [RatingController::class, 'store']); 
@@ -60,7 +75,11 @@ Route::prefix('shop/{shop_id}/{product_id}/rating')->group(function () {
     });
 }); 
 
-
+/*
+|--------------------------------------------------------------------------
+| save-shop Routes
+|--------------------------------------------------------------------------
+*/
 
 
 Route::prefix('save-shop')->group(function () {
@@ -69,6 +88,37 @@ Route::prefix('save-shop')->group(function () {
     Route::get('/{id}', [SaveShopController::class, 'show']);
     Route::put('/{id}', [SaveShopController::class, 'update']);
     Route::delete('/{id}', [SaveShopController::class, 'destroy']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| save-product Routes
+|--------------------------------------------------------------------------
+*/
+
+
+Route::prefix('save-product')->group(function () {
+    // Route::get('/', [SaveProductController::class, 'index']);
+    // Route::post('/', [SaveProductController::class, 'store']);
+    // Route::get('/{id}', [SaveProductController::class, 'show']);
+    // Route::put('/{id}', [SaveProductController::class, 'update']);
+    // Route::delete('/{id}', [SaveProductController::class, 'destroy']);
+    Route::apiResources(['/' => SaveProductController::class]);
+});
+
+/*
+|--------------------------------------------------------------------------
+| cart Routes
+|--------------------------------------------------------------------------
+*/
+
+
+Route::prefix('cart')->group(function () {
+    Route::get('/',  [Cart::class, 'index']);
+    Route::post('/', [Cart::class, 'store']);
+    Route::get('/{id}', [Cart::class, 'show']);
+    Route::put('/{id}', [Cart::class, 'update']);
+    Route::delete('/{id}', [Cart::class, 'destroy']);
 });
 
 

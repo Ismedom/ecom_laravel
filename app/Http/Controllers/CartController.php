@@ -12,15 +12,12 @@ class CartController extends Controller
      */
     public function index()
     {
-      
         $cartItems = Cart::all();
         return response()->json($cartItems);
     }
 
-   
     public function store(Request $request)
     {
-      
         $validated = $request->validate([
             'product_id' => 'required|uuid',
             'name' => 'required|string',

@@ -15,7 +15,7 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, string $shop_id)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -34,7 +34,6 @@ class ProductController extends Controller
         }
 
 
-        $shop_id = $request->shop_id;
         $shop = Shop::find($shop_id);
 
         if( $shop->user_owner_id!=Auth::id()){
@@ -50,9 +49,9 @@ class ProductController extends Controller
     }
 
     
-    public function show(string $id)
+    public function show( string $shop_id, string $product_id)
     {
-        $product = Product::find($id);
+        $product = Product::find($product_id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -61,11 +60,10 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
-   
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $shop_id, string $id)
+    public function update(Request $request, string $shop_id, string $product_id)
     {
         $shop = Shop::find($shop_id);
 
@@ -73,7 +71,7 @@ class ProductController extends Controller
             return response()->json(["permission" => "You are not the owner of this shop"], 403);
         }
 
-        $product = Product::find($id);
+        $product = Product::find($product_id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -91,8 +89,7 @@ class ProductController extends Controller
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'view_count' => 'nullable|integer|min:0',
         ]);
-
-       
+        
         $product->update($validated);
 
         return response()->json($product);

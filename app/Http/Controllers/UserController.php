@@ -21,8 +21,6 @@ class UserController extends Controller
 
     // Sign In part
 
-
-    
     public function signIn(Request $request) {
         try {
             $credentials = $request->validate([
@@ -74,9 +72,7 @@ class UserController extends Controller
 
         
             $token = $user->createToken($request->name, ['*'], now()->addDays(30))->plainTextToken;
-         
             return response()->json(['user_token'=>$token]);
-           
         } catch (ValidationException $e) {
             return response()->json([
                 'errors' => $e->errors()
@@ -84,7 +80,6 @@ class UserController extends Controller
         }
     }
 
-   
 
     public function delete_user(Request $request, $id)
     {

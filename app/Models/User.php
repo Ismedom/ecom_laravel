@@ -59,5 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class, 'user_owner_id');
     }
+    public function rating()
+    {
+        return $this->hasMany(Rating::class, 'user_rating_id');
+    }
 
 }
