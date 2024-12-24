@@ -82,11 +82,10 @@ Route::prefix('shop/{shop_id}/product/{product_id}/rating')->group(function () {
 */
 
 
-Route::prefix('save-shop')->group(function () {
+Route::prefix('save_shop')->group(function () {
     Route::get('/', [SaveShopController::class, 'index']);
-    Route::post('/', [SaveShopController::class, 'store']);
+    Route::post('/{id}', [SaveShopController::class, 'store']);
     Route::get('/{id}', [SaveShopController::class, 'show']);
-    Route::put('/{id}', [SaveShopController::class, 'update']);
     Route::delete('/{id}', [SaveShopController::class, 'destroy']);
 });
 
@@ -97,13 +96,12 @@ Route::prefix('save-shop')->group(function () {
 */
 
 
-Route::prefix('save-product')->group(function () {
-    // Route::get('/', [SaveProductController::class, 'index']);
-    // Route::post('/', [SaveProductController::class, 'store']);
-    // Route::get('/{id}', [SaveProductController::class, 'show']);
-    // Route::put('/{id}', [SaveProductController::class, 'update']);
-    // Route::delete('/{id}', [SaveProductController::class, 'destroy']);
-    Route::apiResources(['/' => SaveProductController::class]);
+Route::prefix('save_product')->group(function () {
+    Route::get('/', [SaveProductController::class, 'index']);
+    Route::post('/{id}', [SaveProductController::class, 'store']);
+    Route::get('/{id}', [SaveProductController::class, 'show']);
+    Route::delete('/{id}', [SaveProductController::class, 'destroy']);
+    // Route::apiResources(['/' => SaveProductController::class]);
 });
 
 /*

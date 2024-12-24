@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('save_shop', function (Blueprint $table) {
             $table->id();
             $table->string('shop_name');
-            $table->string('user_owner_id')->unique();
+            $table->unsignedBigInteger('shop_id');
+            $table->foreign('shop_id')->references('id')->on('shop')->onDelete('cascade');
             $table->string('shop_profile_image');
             $table->timestamps();
         });

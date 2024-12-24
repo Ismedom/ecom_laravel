@@ -23,7 +23,11 @@ class SaveShop extends Model
      */
     protected $fillable = [
         'shop_name',
-        'user_owner_id',
+        'shop_id',
         'shop_profile_image',
     ];
+    public function save_shop()
+    {
+        return $this->belongsTo(Shop::class, 'user_rating_id');
+    }
 }

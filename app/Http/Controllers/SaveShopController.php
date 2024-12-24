@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SaveShop;
-use Illuminate\Http\Request;
+use App\Models\Shop;
 
 class SaveShopController extends Controller
 {
@@ -19,19 +19,21 @@ class SaveShopController extends Controller
     /**
      * Store a newly created save_shop in storage.
      */
-    public function store(Request $request)
+    public function store(string $shop_id)
     {
-        $request->validate([
-            'shop_name' => 'required|string|max:255',
-            'user_owner_id' => 'required|string|unique:save_shop,user_owner_id',
-            'shop_profile_image' => 'required|string|max:255',
-        ]);
-
-        $saveShop = SaveShop::create([
-            'shop_name' => $request->shop_name,
-            'user_owner_id' => $request->user_owner_id,
-            'shop_profile_image' => $request->shop_profile_image,
-        ]);
+        $shop =  Shop::find($shop_id);
+        if (!$shop) {
+            return response()->json([
+                'message' => 'Shop not found.',
+            ], 404);
+        }
+        $saveShop = SaveShop::create(
+            [
+                'shop_name' =>$shop->shop_name,
+                'shop_id' => $shop-> id,
+                'shop_profile_image' =>$shop->shop_profile_image,
+            ]
+            );
 
         return response()->json($saveShop, 201);
     }
@@ -45,22 +47,6 @@ class SaveShopController extends Controller
         return response()->json($saveShop);
     }
 
-    /**
-     * Update the specified save_shop in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'shop_name' => 'sometimes|string|max:255',
-            'user_owner_id' => 'sometimes|string|unique:save_shop,user_owner_id,' . $id,
-            'shop_profile_image' => 'sometimes|string|max:255',
-        ]);
-
-        $saveShop = SaveShop::findOrFail($id);
-        $saveShop->update($request->all());
-
-        return response()->json($saveShop);
-    }
 
     /**
      * Remove the specified save_shop from storage.
