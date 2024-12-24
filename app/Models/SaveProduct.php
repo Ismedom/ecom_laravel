@@ -23,7 +23,12 @@ class SaveProduct extends Model
      * @var array
      */
     protected $fillable = [
+        'title',
+        'description',
+        'category',
+        'price',
         'product_id',
         'product_type',
+        'image_base_url'
     ];
 }

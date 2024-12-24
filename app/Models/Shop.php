@@ -30,7 +30,7 @@ class Shop extends Model
     ];
 
 
-    // Relationship with User (owner)
+  
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_owner_id');
@@ -38,5 +38,9 @@ class Shop extends Model
     public function product()
     {
         return $this->hasMany(Product::class, 'shop_id');
+    }
+    public function save_shop()
+    {
+        return $this->hasMany(SaveShop::class, 'shop_id');
     }
 }

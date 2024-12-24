@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\SaveProduct;
 use Illuminate\Http\Request;
 
@@ -19,19 +20,19 @@ class SaveProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $product_id)
     {
-        $request->validate([
-            'product_id' => 'required|string|max:255',
-            'product_type' => 'required|string|max:255',
-        ]);
+        // $request->validate([
+        //     'product_type' => 'required|string|max:255',
+        // ]);
+        $product = Product::find($product_id);
 
-        $saveProduct = SaveProduct::create([
-            'product_id' => $request->product_id,
-            'product_type' => $request->product_type,
-        ]);
+        // $saveProduct = SaveProduct::create([
+        //     'product_id' => $product->id,
+        //     'shop_id' => $product->shop_id,
+        // ]);
 
-        return response()->json($saveProduct, 201);
+        return response()->json($product, 201);
     }
 
     /**
@@ -40,22 +41,6 @@ class SaveProductController extends Controller
     public function show(string $id)
     {
         $saveProduct = SaveProduct::findOrFail($id);
-        return response()->json($saveProduct);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'product_id' => 'sometimes|string|max:255',
-            'product_type' => 'sometimes|string|max:255',
-        ]);
-
-        $saveProduct = SaveProduct::findOrFail($id);
-        $saveProduct->update($request->all());
-
         return response()->json($saveProduct);
     }
 
