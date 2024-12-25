@@ -22,12 +22,17 @@ class SaveShop extends Model
      * @var array
      */
     protected $fillable = [
+        'user_saved_id',
         'shop_name',
         'shop_id',
         'shop_profile_image',
     ];
-    public function save_shop()
+    public function shop_id()
     {
-        return $this->belongsTo(Shop::class, 'user_rating_id');
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
+    public function user_id()
+    {
+        return $this->belongsTo(User::class, 'user_saved_id');
     }
 }

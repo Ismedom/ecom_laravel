@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('save_product', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_saved_id');
+            $table->foreign('user_saved_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->string('description');
             $table->string('category');
