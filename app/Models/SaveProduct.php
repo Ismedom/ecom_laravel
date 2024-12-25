@@ -24,6 +24,7 @@ class SaveProduct extends Model
      */
     protected $fillable = [
         'title',
+        'user_saved_id',
         'description',
         'category',
         'price',
@@ -31,4 +32,12 @@ class SaveProduct extends Model
         'product_type',
         'image_base_url'
     ];
+    public function product_id()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function user_id()
+    {
+        return $this->belongsTo(User::class, 'user_saved_id');
+    }
 }

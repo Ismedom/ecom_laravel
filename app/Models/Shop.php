@@ -43,4 +43,8 @@ class Shop extends Model
     {
         return $this->hasMany(SaveShop::class, 'shop_id');
     }
+    public function shop_id()
+    {
+        return $this->hasMany(SaveShop::class, 'shop_id');
+    }
 }

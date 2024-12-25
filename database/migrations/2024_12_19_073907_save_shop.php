@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('save_shop', function (Blueprint $table) {
             $table->id();
             $table->string('shop_name');
+            $table->unsignedBigInteger('user_saved_id');
+            $table->foreign('user_saved_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('shop_id');
             $table->foreign('shop_id')->references('id')->on('shop')->onDelete('cascade');
             $table->string('shop_profile_image');

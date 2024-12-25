@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SaveShop;
 use App\Models\Shop;
+use Illuminate\Support\Facades\Auth;
+
 
 class SaveShopController extends Controller
 {
@@ -27,8 +29,10 @@ class SaveShopController extends Controller
                 'message' => 'Shop not found.',
             ], 404);
         }
+     
         $saveShop = SaveShop::create(
             [
+                'user_saved_id'=> Auth::id(),
                 'shop_name' =>$shop->shop_name,
                 'shop_id' => $shop-> id,
                 'shop_profile_image' =>$shop->shop_profile_image,

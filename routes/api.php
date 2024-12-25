@@ -1,11 +1,12 @@
 <?php
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SaveProductController;
 use App\Http\Controllers\SaveShopController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
-use App\Models\Cart;
+use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,8 +31,6 @@ Route::prefix('auth')->group(function () {
 Route::prefix('shop')->group(function () {
     
     Route::get('/', [ShopController::class, 'index']);
-
-   
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [ShopController::class, 'store']); 
         Route::get('{shop_id}', [ShopController::class, 'show']); 
@@ -49,7 +48,6 @@ Route::prefix('shop')->group(function () {
 Route::prefix('shop/{shop_id}/product')->group(function () {
     
     Route::get('/', [ProductController::class, 'index']);
-
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [ProductController::class, 'store']); 
         Route::get('{product_id}', [ProductController::class, 'show']); 
@@ -83,10 +81,12 @@ Route::prefix('shop/{shop_id}/product/{product_id}/rating')->group(function () {
 
 
 Route::prefix('save_shop')->group(function () {
-    Route::get('/', [SaveShopController::class, 'index']);
-    Route::post('/{id}', [SaveShopController::class, 'store']);
-    Route::get('/{id}', [SaveShopController::class, 'show']);
-    Route::delete('/{id}', [SaveShopController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/', [SaveShopController::class, 'index']);
+        Route::post('/{id}', [SaveShopController::class, 'store']);
+        Route::get('/{id}', [SaveShopController::class, 'show']);
+        Route::delete('/{id}', [SaveShopController::class, 'destroy']);
+    });
 });
 
 /*
@@ -97,12 +97,14 @@ Route::prefix('save_shop')->group(function () {
 
 
 Route::prefix('save_product')->group(function () {
-    Route::get('/', [SaveProductController::class, 'index']);
-    Route::post('/{id}', [SaveProductController::class, 'store']);
-    Route::get('/{id}', [SaveProductController::class, 'show']);
-    Route::delete('/{id}', [SaveProductController::class, 'destroy']);
-    // Route::apiResources(['/' => SaveProductController::class]);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/', [SaveProductController::class, 'index']);
+        Route::post('/{id}', [SaveProductController::class, 'store']);
+        Route::get('/{id}', [SaveProductController::class, 'show']);
+        Route::delete('/{id}', [SaveProductController::class, 'destroy']);
+    });
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -112,13 +114,22 @@ Route::prefix('save_product')->group(function () {
 
 
 Route::prefix('cart')->group(function () {
-    Route::get('/',  [Cart::class, 'index']);
-    Route::post('/', [Cart::class, 'store']);
-    Route::get('/{id}', [Cart::class, 'show']);
-    Route::put('/{id}', [Cart::class, 'update']);
-    Route::delete('/{id}', [Cart::class, 'destroy']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/',  [CartController::class, 'index']);
+        Route::post('/{product_id}', [CartController::class, 'store']);
+        Route::get('/{id}', [CartController::class, 'show']);
+        Route::delete('/{id}', [CartController::class, 'destroy']);
+    });
 });
 
+Route::prefix('view')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/',  [ViewController::class, 'index']);
+        Route::post('/{product_id}', [ViewController::class, 'store']);
+        Route::get('/{id}', [ViewController::class, 'show']);
+        Route::delete('/{id}', [ViewController::class, 'destroy']);
+    });
+});
 
 
 
