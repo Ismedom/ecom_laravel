@@ -55,4 +55,8 @@ class Product extends Model
     {
         return $this->hasMany(SaveProduct::class, 'product_id');
     }
+    public function view_product()
+    {
+        return $this->hasMany(SaveProduct::class, 'product_id');
+    }
 }

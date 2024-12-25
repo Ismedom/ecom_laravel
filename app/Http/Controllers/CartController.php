@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 
@@ -16,17 +17,17 @@ class CartController extends Controller
         return response()->json($cartItems);
     }
 
-    public function store(Request $request)
+    public function store( Request $request,string $id)
     {
-        $validated = $request->validate([
-            'product_id' => 'required|uuid',
-            'name' => 'required|string',
-            'price' => 'required|string',
-            'product_type' => 'required|string',
-            'paid_status' => 'required|boolean',
-        ]);
+        $product = Product::find($id);
 
-        $cartItem = Cart::create($validated);
+        $cartItem = Cart::create([
+            'product_id'=> $product -> id,
+            'name'=> $product -> title,
+            'price'=> $product -> price,
+            'product_type'=> $product -> category,
+            'paid_status'=> $request-> paid_status,
+        ]);
 
         return response()->json($cartItem, 201);
     }
@@ -41,25 +42,7 @@ class CartController extends Controller
         return response()->json($cartItem);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
-            'product_id' => 'sometimes|uuid',
-            'name' => 'sometimes|string',
-            'price' => 'sometimes|string',
-            'product_type' => 'sometimes|string',
-            'paid_status' => 'sometimes|boolean',
-        ]);
-
-       
-        $cartItem = Cart::findOrFail($id);
-        $cartItem->update($validated);
-
-        return response()->json($cartItem);
-    }
+    
 
     /**
      * Remove the specified resource from storage.

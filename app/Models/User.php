@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function views()
     {
-        return $this->hasMany(View::class, 'product_id');
+        return $this->hasMany(View::class, 'viewer_id');
     }
     public function owner()
     {
@@ -70,6 +70,10 @@ class User extends Authenticatable
     public function user_product_id()
     {
         return $this->hasMany(SaveProduct::class, 'user_saved_id');
+    }
+    public function view_product()
+    {
+        return $this->belongsToMany(Product::class, 'product_id');
     }
 
 }
