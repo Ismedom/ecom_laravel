@@ -19,7 +19,11 @@ Route::prefix('auth')->group(function () {
   
     Route::post('login', [UserController::class, 'signIn']);
     Route::post('register', [UserController::class, 'register']);
-    Route::middleware('auth:sanctum')->post('logout', [UserController::class, 'logout']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [UserController::class, 'logout']);
+        Route::delete('delete', [UserController::class, 'delete_user']);
+    });
 });
 
 /*

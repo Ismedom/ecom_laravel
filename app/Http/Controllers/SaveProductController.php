@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\SaveProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaveProductController extends Controller
 {
@@ -13,7 +14,7 @@ class SaveProductController extends Controller
      */
     public function index()
     {
-        $products = SaveProduct::all();
+        $products = SaveProduct::where('user_saved_id', 2)->get();
         return response()->json($products);
     }
 
@@ -22,17 +23,19 @@ class SaveProductController extends Controller
      */
     public function store(Request $request, string $product_id)
     {
-        // $request->validate([
-        //     'product_type' => 'required|string|max:255',
-        // ]);
         $product = Product::find($product_id);
+        $saveProduct = SaveProduct::create([
+            'title'=> $product->title,
+            'product_id' => $product->id,
+            'user_saved_id'=> Auth::id(), 
+            'shop_id' => $product->shop_id,
+            'description' => $product->description,
+            'category' => $product->category,
+            'price' => $product->price,
+            'product_type' => $product->category,
+        ]);
 
-        // $saveProduct = SaveProduct::create([
-        //     'product_id' => $product->id,
-        //     'shop_id' => $product->shop_id,
-        // ]);
-
-        return response()->json($product, 201);
+        return response()->json($saveProduct, 201);
     }
 
     /**

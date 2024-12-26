@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Shop;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -29,18 +30,20 @@ class ProductController extends Controller
             'view_count' => 'nullable|integer|min:0',
         ]);
 
+        if ($request->hasFile('shop_profile_image')) {
+            $result = cloudinary::upload($request->file('image_base_url')->getRealPath());
+            $validated["image_base_url"] = $result->getSecurePath();
+        }
         if (!Auth::check()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-
         $shop = Shop::find($shop_id);
 
-        if( $shop->user_owner_id!=Auth::id()){
+        if( $shop->user_owner_id != Auth::id()){
             return response()->json(["permission" => "You are not the owner of this shop"], 403);
         }
-
-
+        
         $validated["shop_id"] = $shop_id;
         $validated["user_owner_id"] = Auth::id();
 
