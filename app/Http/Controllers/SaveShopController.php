@@ -14,7 +14,7 @@ class SaveShopController extends Controller
      */
     public function index()
     {
-        $shops = SaveShop::all();
+        $shops = SaveShop::where('user_saved_id', Auth::id())->get();
         return response()->json($shops);
     }
 
@@ -35,7 +35,7 @@ class SaveShopController extends Controller
                 'user_saved_id'=> Auth::id(),
                 'shop_name' =>$shop->shop_name,
                 'shop_id' => $shop-> id,
-                'shop_profile_image' =>$shop->shop_profile_image,
+                'shop_profile_image' => $shop-> shop_profile_image,
             ]
             );
 

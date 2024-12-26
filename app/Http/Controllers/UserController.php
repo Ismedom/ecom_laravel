@@ -29,7 +29,6 @@ class UserController extends Controller
             ]);
         
             if (Auth::attempt($credentials)) {
-               
                 $token =Auth::user()->createToken($request->name, ['*'], expiresAt: now()->addDays(30))->plainTextToken; 
                 return response()->json(['user_token' => $token]);
             }
@@ -81,14 +80,11 @@ class UserController extends Controller
     }
 
 
-    public function delete_user(Request $request, $id)
+    public function delete_user()
     {
         try {
-            if ($request->user()->id != $id && !$request->user()->isAdmin()) { 
-                return response()->json(['message' => 'Unauthorized'], 403);
-            }
-
-            $user = User::find($id);
+          
+            $user = User::find(Auth::id());
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);
             }

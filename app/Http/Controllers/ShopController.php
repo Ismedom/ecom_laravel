@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+
     public function index()
     {
         $shops = Shop::all();
@@ -18,20 +20,24 @@ class ShopController extends Controller
     {
         $validated = $request->validate([
             'shop_name' => 'required|string|max:255',
-            'shop_profile_image' => 'nullable|string',
+            'shop_profile_image' => 'nullable|image|max:2048',
             'categories' => 'required|string',
             'keywords' => 'required|json',
         ]);
+
+        if ($request->hasFile('shop_profile_image')) {
+            $result = Cloudinary::upload($request->file('shop_profile_image')->getRealPath());
+            $validated["shop_profile_image"] = $result->getSecurePath();
+        }
 
         $validated["user_owner_id"] = Auth::id();
         $shop = Shop::create($validated);
 
         return response()->json([
             'message' => 'Shop created successfully!',
-            'shop' => $shop,
+            'shop' => $shop
         ], 201);
     }
-
     /**
      * Display the specified resource.
      */
@@ -82,7 +88,6 @@ class ShopController extends Controller
     public function destroy(string $shop_id)
     {
         $shop = Shop::find($shop_id);
-
         if (!$shop) {
             return response()->json([
                 'message' => 'Shop not found.',

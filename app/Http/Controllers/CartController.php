@@ -37,7 +37,6 @@ class CartController extends Controller
      */
     public function show(string $id)
     {
-       
         $cartItem = Cart::findOrFail($id);
         return response()->json($cartItem);
     }
@@ -49,10 +48,8 @@ class CartController extends Controller
      */
     public function destroy(string $id)
     {
-       
         $cartItem = Cart::findOrFail($id);
         $cartItem->delete();
-
         return response()->json(['message' => 'Cart item deleted successfully.']);
     }
 }
