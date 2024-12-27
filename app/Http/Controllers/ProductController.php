@@ -25,6 +25,7 @@ class ProductController extends Controller
             'keywords' => 'nullable|json',
             'language' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
+            'currency' => 'required|string',
             'image_base_url' => 'required|string',
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'view_count' => 'nullable|integer|min:0',

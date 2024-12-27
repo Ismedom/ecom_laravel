@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('keywords')->nullable();
             $table->string('language')->nullable();
             $table->float('price');
+            $table->string('currency');
             $table->string('image_base_url');
             $table->float('average_rating')->nullable();
             $table->integer('view_count')->nullable();

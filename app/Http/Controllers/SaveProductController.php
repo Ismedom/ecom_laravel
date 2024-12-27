@@ -25,14 +25,15 @@ class SaveProductController extends Controller
     {
         $product = Product::find($product_id);
         $saveProduct = SaveProduct::create([
-            'title'=> $product->title,
-            'product_id' => $product->id,
+            'title'=> $product -> title,
+            'product_id' => $product -> id,
             'user_saved_id'=> Auth::id(), 
-            'shop_id' => $product->shop_id,
-            'description' => $product->description,
-            'category' => $product->category,
-            'price' => $product->price,
-            'product_type' => $product->category,
+            'shop_id' => $product -> shop_id,
+            'description' => $product -> description,
+            'category' => $product -> category,
+            'price' => $product -> price,
+            'currency' => $product -> currency,
+            'product_type' => $product -> category,
         ]);
 
         return response()->json($saveProduct, 201);
