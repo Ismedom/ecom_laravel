@@ -66,10 +66,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' =>  Hash::make($request->password),
             ]);
-        
             
-
-        
             $token = $user->createToken($request->name, ['*'], now()->addDays(30))->plainTextToken;
             return response()->json(['user_token'=>$token]);
         } catch (ValidationException $e) {
@@ -78,12 +75,12 @@ class UserController extends Controller
             ], 422);
         }
     }
+    
 
-
+//  the deleting use routing
     public function delete_user()
     {
         try {
-          
             $user = User::find(Auth::id());
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);

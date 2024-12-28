@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -13,7 +14,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cartItems = Cart::all();
+        $cartItems = Cart::where('user_saved_id', Auth::id())->get();
         return response()->json($cartItems);
     }
 

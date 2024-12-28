@@ -23,6 +23,7 @@ class Cart extends Model
      */
     protected $fillable = [
         'product_id',
+        'user_carting_id',
         'name',
         'price',
         'product_type',
@@ -33,6 +34,10 @@ class Cart extends Model
     // Relationship with User (owner)
     public function owner()
     {
-        return $this->belongsTo(User::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function carting()
+    {
+        return $this->belongsToMany(User::class, 'user_carting_id');
     }
 }
