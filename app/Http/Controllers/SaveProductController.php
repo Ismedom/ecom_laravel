@@ -34,6 +34,7 @@ class SaveProductController extends Controller
             'price' => $product -> price,
             'currency' => $product -> currency,
             'product_type' => $product -> category,
+            'image_base_url'=> $product -> image_base_url,
         ]);
 
         return response()->json($saveProduct, 201);

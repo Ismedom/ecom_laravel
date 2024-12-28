@@ -69,7 +69,7 @@ class ShopController extends Controller
 
         $validated = $request->validate([
             'shop_name' => 'sometimes|string|max:255',
-            'shop_profile_image' => 'nullable|string',
+            'shop_profile_image' => 'nullable|image|max:2048',
             'categories' => 'sometimes|string',
             'keywords' => 'sometimes|json',
         ]);

@@ -51,11 +51,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(View::class, 'viewer_id');
     }
-    public function owner()
+    public function shop_owner()
     {
         return $this->hasMany(Shop::class, 'user_owner_id');
     }
-    public function product()
+    public function product_owner()
     {
         return $this->hasMany(Product::class, 'user_owner_id');
     }
@@ -74,6 +74,10 @@ class User extends Authenticatable
     public function view_product()
     {
         return $this->belongsToMany(Product::class, 'product_id');
+    }
+    public function carting()
+    {
+        return $this->hasMany(Cart::class, 'user_carting_id');
     }
 
 }
