@@ -67,7 +67,7 @@ Route::prefix('shop/{shop_id}/product')->group(function () {
 */
 
 
-Route::prefix('shop/{shop_id}/product/{product_id}/rating')->group(function () {
+Route::prefix('/product/{product_id}/rating')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [RatingController::class, 'index']); 
         Route::post('/', [RatingController::class, 'store']); 
@@ -128,7 +128,7 @@ Route::prefix('cart')->group(function () {
 
 Route::prefix('view')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/',  [ViewController::class, 'index']);
+        Route::get('get_view/{product_id}',  [ViewController::class, 'index']);
         Route::post('/{product_id}', [ViewController::class, 'store']);
         Route::get('/{id}', [ViewController::class, 'show']);
         Route::delete('/{id}', [ViewController::class, 'destroy']);

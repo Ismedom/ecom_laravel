@@ -28,6 +28,7 @@ class Product extends Model
         'user_owner_id',
         'category',
         'categories',
+        'currency',
         'keywords',
         'language',
         'price',

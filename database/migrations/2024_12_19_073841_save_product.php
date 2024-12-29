@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('currency');
             $table->string('product_id');
             $table->string('product_type');
+            $table->string('image_base_url');
             $table->timestamps();
         });
     }

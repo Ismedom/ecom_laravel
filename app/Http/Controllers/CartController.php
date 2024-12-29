@@ -24,6 +24,7 @@ class CartController extends Controller
 
         $cartItem = Cart::create([
             'product_id'=> $product -> id,
+            'user_carting_id'=> Auth::id(),
             'name'=> $product -> title,
             'price'=> $product -> price,
             'product_type'=> $product -> category,

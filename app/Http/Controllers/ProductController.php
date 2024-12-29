@@ -26,12 +26,12 @@ class ProductController extends Controller
             'language' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
             'currency' => 'required|string',
-            'image_base_url' => 'required|string',
+            'image_base_url' => 'required|image|max:2048',
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'view_count' => 'nullable|integer|min:0',
         ]);
 
-        if ($request->hasFile('shop_profile_image')) {
+        if ($request->hasFile('image_base_url')) {
             $result = cloudinary::upload($request->file('image_base_url')->getRealPath());
             $validated["image_base_url"] = $result->getSecurePath();
         }

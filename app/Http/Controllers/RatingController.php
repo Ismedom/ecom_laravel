@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {
-    public function index()
+    public function index(string $product_id)
     {
-        $ratings = Rating::all();
+        $ratings = Rating::where("product_id", $product_id)->get();
         return response()->json($ratings);
     }
 
 
-    public function store(Request $request, string $shop_id, string $product_id)
+    public function store(Request $request,  string $product_id)
     {
         $request->validate([
             'rating' => 'required|min:1|max:5',
@@ -30,14 +30,14 @@ class RatingController extends Controller
         return response()->json($rating, 201);
     }
 
-    public function show( string $shop_id, string $product_id, string $id)
+    public function show(  string $product_id, string $id)
     {
         $rating = Rating::findOrFail($id);
         return response()->json($rating);
     }
 
 
-    public function update(Request $request, string $shop_id, string $product_id, string $id)
+    public function update(Request $request,  string $product_id, string $id)
     {
         $validated= $request->validate([
             'rating' => 'required|min:1|max:5',
@@ -49,7 +49,7 @@ class RatingController extends Controller
     }
 
 
-    public function destroy(string $shop_id, string $product_id, string $id)
+    public function destroy( string $product_id, string $id)
     {
         $rating = Rating::findOrFail($id);
         $rating->delete();
