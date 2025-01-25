@@ -24,10 +24,12 @@ class Cart extends Model
     protected $fillable = [
         'product_id',
         'user_carting_id',
-        'name',
+        'title',
+        'author',
         'price',
-        'product_type',
         'paid_status',
+        'description',
+        'coverImageUrl',
     ];
 
 

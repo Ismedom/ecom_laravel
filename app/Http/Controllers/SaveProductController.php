@@ -14,7 +14,7 @@ class SaveProductController extends Controller
      */
     public function index()
     {
-        $products = SaveProduct::where('user_saved_id', 2)->get();
+        $products = SaveProduct::where('user_saved_id', Auth::id())->get();
         return response()->json($products);
     }
 
@@ -25,16 +25,15 @@ class SaveProductController extends Controller
     {
         $product = Product::find($product_id);
         $saveProduct = SaveProduct::create([
-            'title'=> $product -> title,
-            'product_id' => $product -> id,
-            'user_saved_id'=> Auth::id(), 
-            'shop_id' => $product -> shop_id,
-            'description' => $product -> description,
-            'category' => $product -> category,
-            'price' => $product -> price,
-            'currency' => $product -> currency,
-            'product_type' => $product -> category,
-            'image_base_url'=> $product -> image_base_url,
+            'title' => $product->title,
+            'product_id' => $product->id,
+            'user_saved_id' => Auth::id(),
+            'shop_id' => $product->shop_id,
+            'author' => $product->author,
+            'price' => $product->price,
+            'rating' => $product->rating,
+            'description' => $product->description,
+            'coverImageUrl' => $product->coverImageUrl,
         ]);
 
         return response()->json($saveProduct, 201);

@@ -23,29 +23,20 @@ class Product extends Model
      */
     protected $fillable = [
         'title',
-        'description',
-        'shop_id',
-        'user_owner_id',
-        'category',
-        'categories',
-        'keywords',
-        'language',
+        'author',
         'price',
-        'image_base_url',
-        'average_rating',
-        'view_count',
+        'rating',
+        'description',
+        'coverImageUrl',
+
     ];
 
 
 
-    
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_owner_id');
-    }
-    public function shop()
-    {
-        return $this->belongsTo(Shop::class, 'shop_id');
     }
     public function product()
     {

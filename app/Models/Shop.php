@@ -10,8 +10,6 @@ class Shop extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'shop';
@@ -29,8 +27,6 @@ class Shop extends Model
         'keywords',
     ];
 
-
-  
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_owner_id');

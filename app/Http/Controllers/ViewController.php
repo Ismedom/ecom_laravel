@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\Auth;
 class ViewController extends Controller
 {
 
-    public function index()
+    public function index(string $product_id)
     {
-        $views = View::all();
+        $views = View::where('product_id', $product_id)->get();
         return response()->json($views);
     }
-
     public function store(string $product_id)
     {
         $product = Product::find($product_id);

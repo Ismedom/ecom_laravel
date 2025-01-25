@@ -1,10 +1,10 @@
 <?php
 
-   /*
+/*
 
-    - My authentication method using Laravel Sanctum with username, email and password 
-    
-    */
+ - My authentication method using Laravel Sanctum with username, email and password 
+ 
+ */
 
 namespace App\Http\Controllers;
 
@@ -21,63 +21,68 @@ class UserController extends Controller
 
     // Sign In part
 
-    public function signIn(Request $request) {
+    public function signIn(Request $request)
+    {
         try {
             $credentials = $request->validate([
                 'email' => 'required|email|exists:users,email',
                 'password' => 'required'
             ]);
-        
+
             if (Auth::attempt($credentials)) {
-                $token =Auth::user()->createToken($request->name, ['*'], expiresAt: now()->addDays(30))->plainTextToken; 
-                return response()->json(['user_token' => $token]);
+                $token = Auth::user()->createToken('auth_token', ['*'], expiresAt: now()->addDays(30))->plainTextToken;
+                return response()->json([
+                    'token' => $token
+                ], 200);
             }
-        
-        
+
+
             return response()->json([
                 'message' => 'Invalid credentials'
             ], 401);
-            
+
         } catch (ValidationException $e) {
             return response()->json([
                 'errors' => $e->errors()
             ], 422);
         }
     }
-    
+
 
     // Register part
 
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         try {
+            // dd($request);
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|unique:users,email',
                 'password' => 'required|string|min:8'
             ]);
-        
+
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
-        
+
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' =>  Hash::make($request->password),
+                'password' => Hash::make($request->password),
             ]);
-            
-            $token = $user->createToken($request->name, ['*'], now()->addDays(30))->plainTextToken;
-            return response()->json(['user_token'=>$token]);
+
+            $token = $user->createToken('auth_token', ['*'], now()->addDays(30))->plainTextToken;
+            return response()->json(['token' => $token], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'errors' => $e->errors()
             ], 422);
         }
     }
-    
 
-//  the deleting use routing
+
+    //  the deleting use routing
     public function delete_user()
     {
         try {
@@ -85,17 +90,17 @@ class UserController extends Controller
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);
             }
-    
+
             $user->delete();
             return response()->json(["message" => "User deleted successfully"]);
-    
+
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred'], 500);
         }
     }
-    
-    
-     // Log Out part
+
+
+    // Log Out part
     public function logOut(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

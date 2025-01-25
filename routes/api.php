@@ -8,6 +8,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('auth')->group(function () {
-  
     Route::post('login', [UserController::class, 'signIn']);
     Route::post('register', [UserController::class, 'register']);
 
@@ -33,15 +33,19 @@ Route::prefix('auth')->group(function () {
 */
 
 Route::prefix('shop')->group(function () {
-    
+
     Route::get('/', [ShopController::class, 'index']);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/', [ShopController::class, 'store']); 
-        Route::get('{shop_id}', [ShopController::class, 'show']); 
-        Route::put('{shop_id}', [ShopController::class, 'update']); 
-        Route::delete('{shop_id}', [ShopController::class, 'destroy']); 
+        Route::post('/', [ShopController::class, 'store']);
+        Route::get('{shop_id}', [ShopController::class, 'show']);
+        Route::put('{shop_id}', [ShopController::class, 'update']);
+        Route::delete('{shop_id}', [ShopController::class, 'destroy']);
     });
 });
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,14 +53,15 @@ Route::prefix('shop')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('shop/{shop_id}/product')->group(function () {
-    
+Route::prefix('/product')->group(function () {
+
     Route::get('/', [ProductController::class, 'index']);
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/', [ProductController::class, 'store']); 
-        Route::get('{product_id}', [ProductController::class, 'show']); 
-        Route::put('{product_id}', [ProductController::class, 'update']); 
-        Route::delete('{product_id}', [ProductController::class, 'destroy']); 
+        Route::post('/', [ProductController::class, 'store']);
+        Route::post('/searching', [ProductController::class, 'filter']);
+        Route::get('{product_id}', [ProductController::class, 'show']);
+        Route::put('{product_id}', [ProductController::class, 'update']);
+        Route::delete('{product_id}', [ProductController::class, 'destroy']);
     });
 });
 
@@ -67,15 +72,15 @@ Route::prefix('shop/{shop_id}/product')->group(function () {
 */
 
 
-Route::prefix('shop/{shop_id}/product/{product_id}/rating')->group(function () {
+Route::prefix('/product/{product_id}/rating')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/', [RatingController::class, 'index']); 
-        Route::post('/', [RatingController::class, 'store']); 
-        Route::get('/{id}', [RatingController::class, 'show']); 
-        Route::put('/{id}', [RatingController::class, 'update']); 
-        Route::delete('/{id}', [RatingController::class, 'destroy']); 
+        Route::get('/', [RatingController::class, 'index']);
+        Route::post('/', [RatingController::class, 'store']);
+        Route::get('/{id}', [RatingController::class, 'show']);
+        Route::put('/{id}', [RatingController::class, 'update']);
+        Route::delete('/{id}', [RatingController::class, 'destroy']);
     });
-}); 
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -119,22 +124,31 @@ Route::prefix('save_product')->group(function () {
 
 Route::prefix('cart')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/',  [CartController::class, 'index']);
+        Route::get('/', [CartController::class, 'index']);
         Route::post('/{product_id}', [CartController::class, 'store']);
         Route::get('/{id}', [CartController::class, 'show']);
         Route::delete('/{id}', [CartController::class, 'destroy']);
     });
 });
 
+
+// 
+
 Route::prefix('view')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/',  [ViewController::class, 'index']);
+        Route::get('get_view/{product_id}', [ViewController::class, 'index']);
         Route::post('/{product_id}', [ViewController::class, 'store']);
         Route::get('/{id}', [ViewController::class, 'show']);
         Route::delete('/{id}', [ViewController::class, 'destroy']);
     });
 });
 
+
+Route::post('/book', function (Request $request) {
+    return response()->json([
+        'data' => $request->all(), // Corrected the typo
+    ]);
+});
 
 
 /*

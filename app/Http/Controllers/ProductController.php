@@ -12,9 +12,35 @@ class ProductController extends Controller
 {
     public function index()
     {
+        echo auth()->id();
         $products = Product::all();
         return response()->json($products);
     }
+    public function filter(Request $request)
+    {
+        // dd("searching");
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+
+        $query = Product::query();
+        if ($request->filled('title')) {
+            $query->where('title', 'LIKE', '%' . $request->title . '%');
+        }
+
+        if ($request->filled('description')) {
+            $query->where('description', 'LIKE', '%' . $request->description . '%');
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        $products = $query->get();
+
+        return response()->json($products);
+    }
+
 
     public function store(Request $request, string $shop_id)
     {
@@ -26,12 +52,12 @@ class ProductController extends Controller
             'language' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
             'currency' => 'required|string',
-            'image_base_url' => 'required|string',
+            'image_base_url' => 'required|image|max:2048',
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'view_count' => 'nullable|integer|min:0',
         ]);
 
-        if ($request->hasFile('shop_profile_image')) {
+        if ($request->hasFile('image_base_url')) {
             $result = cloudinary::upload($request->file('image_base_url')->getRealPath());
             $validated["image_base_url"] = $result->getSecurePath();
         }
@@ -41,10 +67,10 @@ class ProductController extends Controller
 
         $shop = Shop::find($shop_id);
 
-        if( $shop->user_owner_id != Auth::id()){
+        if ($shop->user_owner_id != Auth::id()) {
             return response()->json(["permission" => "You are not the owner of this shop"], 403);
         }
-        
+
         $validated["shop_id"] = $shop_id;
         $validated["user_owner_id"] = Auth::id();
 
@@ -52,8 +78,8 @@ class ProductController extends Controller
         return response()->json($product, 201);
     }
 
-    
-    public function show( string $shop_id, string $product_id)
+
+    public function show(string $shop_id, string $product_id)
     {
         $product = Product::find($product_id);
 
@@ -71,7 +97,7 @@ class ProductController extends Controller
     {
         $shop = Shop::find($shop_id);
 
-        if( $shop->user_owner_id != Auth::id()){
+        if ($shop->user_owner_id != Auth::id()) {
             return response()->json(["permission" => "You are not the owner of this shop"], 403);
         }
 
@@ -81,7 +107,7 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product not found'], 404);
         }
 
-        
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -93,7 +119,7 @@ class ProductController extends Controller
             'average_rating' => 'nullable|numeric|min:0|max:5',
             'view_count' => 'nullable|integer|min:0',
         ]);
-        
+
         $product->update($validated);
 
         return response()->json($product);
@@ -111,7 +137,7 @@ class ProductController extends Controller
         }
         $shop = Shop::find($shop_id);
 
-        if( $shop->user_owner_id != Auth::id()){
+        if ($shop->user_owner_id != Auth::id()) {
             return response()->json(["permission" => "You are not the owner of this shop"], 403);
         }
 
