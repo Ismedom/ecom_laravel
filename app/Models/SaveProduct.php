@@ -23,14 +23,15 @@ class SaveProduct extends Model
      * @var array
      */
     protected $fillable = [
+        'product_id',
         'title',
         'user_saved_id',
-        'description',
-        'category',
+        'author',
         'price',
-        'product_id',
-        'product_type',
-        'image_base_url'
+        'rating',
+        'description',
+        'coverImageUrl',
+
     ];
     public function product_id()
     {

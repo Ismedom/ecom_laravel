@@ -14,21 +14,25 @@ class CartController extends Controller
      */
     public function index()
     {
+
         $cartItems = Cart::where('user_carting_id', Auth::id())->get();
         return response()->json($cartItems);
     }
 
-    public function store( Request $request,string $id)
+    public function store(string $id)
     {
         $product = Product::find($id);
 
         $cartItem = Cart::create([
-            'product_id'=> $product -> id,
-            'user_carting_id'=> Auth::id(),
-            'name'=> $product -> title,
-            'price'=> $product -> price,
-            'product_type'=> $product -> category,
-            'paid_status'=> $request-> paid_status,
+            'product_id' => $product->id,
+            'user_carting_id' => Auth::id(),
+            'title' => $product->title,
+            'price' => $product->price,
+            'author' => $product->author,
+            'rating' => $product->rating,
+            'description' => $product->description,
+            'coverImageUrl' => $product->coverImageUrl,
+
         ]);
 
         return response()->json($cartItem, 201);
@@ -43,7 +47,7 @@ class CartController extends Controller
         return response()->json($cartItem);
     }
 
-    
+
 
     /**
      * Remove the specified resource from storage.
